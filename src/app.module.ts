@@ -6,13 +6,17 @@ import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [MongooseModule.forRoot(
-    'mongodb+srv://sheindav:SPW5342118@cluster0-h6hxw.mongodb.net/nest-commerce?retryWrites=true&w=majority',
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
-  ), SharedModule, AuthModule],
+  imports: [
+    MongooseModule.forRoot(
+      'mongodb+srv://sheindav:SPW5342118@cluster0-h6hxw.mongodb.net/nest-commerce?retryWrites=true&w=majority',
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      }
+    ), 
+    SharedModule, 
+    AuthModule
+  ],
   controllers: [AppController],
   providers: [
     AppService
