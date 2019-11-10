@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { User } from '../types/user';
 import { InjectModel } from '@nestjs/mongoose';
 import { RegisterDTO, LoginDTO } from '../auth/auth.dto';
-// import { Payload } from '../types/payload';
+import { Payload } from '../types/payload';
 import * as brcypt from 'bcrypt';
 
 @Injectable()
@@ -42,10 +42,10 @@ export class UserService {
     }
   }
 
-//   async findByPayload(payload: Payload) {
-//     const { username } = payload;
-//     return await this.userModel.findOne({ username });
-//   }
+  async findByPayload(payload: Payload) {
+    const { username } = payload;
+    return await this.userModel.findOne({ username });
+  }
 
   sanitizeUser(user: User) {
     const sanitized = user.toObject();
