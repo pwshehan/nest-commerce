@@ -1,19 +1,21 @@
 const axios = require('axios');
 
 (async () => {
-    const {
-        data: { token }
-    } = await axios.post('http://localhost:3000/auth/login', {
-        username: 'username',
-        password: 'password'
-    })
-
     try {
-        const { data } = await axios.get('http://localhost:3000/auth', {
+        const { data } = await axios.post('http://localhost:3000/auth/login', {
+            username: 'username',
+            password: 'password',
+            // seller: true
+        })
+        console.log(data);
+
+        const { token } = data;
+        const { data: res2 } = await axios.get('http://localhost:3000/auth', {
             headers: { Authorization: `bearer ${token}`} 
         });
-        console.table(data);
+
+        console.table(res2);
     } catch (err) {
-        console.log(err);
+        console.log(err); 
     }
 })();
