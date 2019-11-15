@@ -1,8 +1,10 @@
 import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { UserService } from '../shared/user.service';
 import { LoginDTO, RegisterDTO } from './auth.dto';
+// import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { Payload } from '../types/payload';
+// import { SellerGuard } from '../guards/seller.guard';
 
 @Controller('auth')
 export class AuthController {
