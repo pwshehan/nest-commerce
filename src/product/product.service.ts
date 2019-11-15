@@ -7,7 +7,7 @@ import { User } from '../types/user';
 
 @Injectable()
 export class ProductService {
-    constructor(@InjectModel('Product') private productModel: Model<Product>){}
+    constructor(@InjectModel('Product') private productModel: Model<Product>) { }
 
     async findall(): Promise<Product[]> {
         return await this.productModel.find().populate('owner');
@@ -18,19 +18,27 @@ export class ProductService {
     }
 
     async findOne(id: string): Promise<Product> {
-        return await this.productModel.findById(id).populate('owner');
+        const product = await this.productModel.findById(id).populate('owner');
+        if (!product) {
+            throw new HttpException('Product not found', HttpStatus.NO_CONTENT);
+        }
+        return product;
     }
 
     async create(productDTO: CreateProductDTO, user: User): Promise<Product> {
         const product = await this.productModel.create({
             owner: user,
-            ...productDTO
+            ...productDTO,
         });
         await product.save();
         return product.populate('owner');
     }
 
-    async update(id: string, productDTO: UpdateProductDTO, userId: string): Promise<Product> {
+    async update(
+        id: string,
+        productDTO: UpdateProductDTO,
+        userId: string,
+    ): Promise<Product> {
         const product = await this.productModel.findById(id);
         if (userId !== product.owner.toString()) {
             throw new HttpException(
@@ -38,7 +46,7 @@ export class ProductService {
                 HttpStatus.UNAUTHORIZED,
             );
         }
-        await product.update(productDTO);
+        await product.updateOne(productDTO);
         return await this.productModel.findById(id).populate('owner');
     }
 
@@ -54,4 +62,3 @@ export class ProductService {
         return product.populate('owner');
     }
 }
- 
